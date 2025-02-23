@@ -146,30 +146,50 @@ Location::Location(const std::string& name, const std::string& description) {
 
 
 
-    Game::Game() {
+Game::Game() {
     // Define main commands
-    commands["drink"] = std::bind(&Game::drink, this, std::placeholders::_1);
-    commands["help"] = std::bind(&Game::showHelp, this, std::placeholders::_1);
-    commands["look"] = std::bind(&Game::look, this, std::placeholders::_1);
-    commands["move"] = std::bind(&Game::move, this, std::placeholders::_1);
-    commands["quit"] = std::bind(&Game::quit, this, std::placeholders::_1);
-    commands["talk"] = std::bind(&Game::talk, this, std::placeholders::_1);
+    // commands["drink"] = std::bind(&Game::drink, this, std::placeholders::_1);
+    // commands["help"] = std::bind(&Game::showHelp, this, std::placeholders::_1);
+    // commands["look"] = std::bind(&Game::look, this, std::placeholders::_1);
+    // commands["move"] = std::bind(&Game::move, this, std::placeholders::_1);
+    // commands["quit"] = std::bind(&Game::quit, this, std::placeholders::_1);
+    // commands["talk"] = std::bind(&Game::talk, this, std::placeholders::_1);
 
-    // Define aliases for commands
-    commandAliases["go"] = "move";
-    commandAliases["walk"] = "move";
-    commandAliases["run"] = "move";
-    commandAliases["exit"] = "quit";
-    commandAliases["speak"] = "talk";
-    commandAliases["chat"] = "talk";
-    commandAliases["view"] = "look";
-    commandAliases["observe"] = "look";
-    commandAliases["consume"] = "drink";
-    commandAliases["chug"] = "drink";
-
+    // // Define aliases for commands
+    // commandAliases["go"] = "move";
+    // commandAliases["walk"] = "move";
+    // commandAliases["run"] = "move";
+    // commandAliases["exit"] = "quit";
+    // commandAliases["speak"] = "talk";
+    // commandAliases["chat"] = "talk";
+    // commandAliases["view"] = "look";
+    // commandAliases["observe"] = "look";
+    // commandAliases["consume"] = "drink";
+    // commandAliases["chug"] = "drink";
+    commands = setup_commands();
     createWorld();
+    currentWeight = 0;
+    caloriesNeeded = 500;
+    inProgress = true;
+    currentLocation = randomLocation();
     drunkness = 0;
-}
+    }
+
+    std::map<std::string, void(*)(std::vector<std::string>)> setup_commands(){
+        std::map<std::string, std::function<void(*)(std::vector<std::string>)>> commands;
+        commands["help"] = [this](std::vector<std::string> target) { showHelp(target); };
+        commands["talk"] = [this](std::vector<std::string> target) { talk(target); };
+        commands["take"] = [this](std::vector<std::string> target) { take(target); };
+        commands["give"] = [this](std::vector<std::string> target) { give(target); };
+        commands["go"] = [this](std::vector<std::string> target) { go(target); };
+        commands["look"] = [this](std::vector<std::string> target) { look(target); };
+        commands["quit"] = [this](std::vector<std::string> target) { quit(target); };
+
+        return commands
+
+    }
+
+
 
 void Game::normalizeCommand(std::string& command) {
     // Convert command to lowercase (optional for case insensitivity)
