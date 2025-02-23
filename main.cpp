@@ -7,7 +7,146 @@
 #include <algorithm>
 
 
-Game::Game() {
+Item::Item(const std::string& name, const std::string& description, int calories, float weight) {
+    if (name.empty()) throw std::invalid_argument("Name cannot be blank.");
+    if (description.empty()) throw std::invalid_argument("Description cannot be blank.");
+    if (calories < 0 || calories > 1000) throw std::invalid_argument("Calories must be between 0 and 1000.");
+    if (weight < 0 || weight > 500) throw std::invalid_argument("Weight must be between 0 and 500.");
+
+    this->name = name;
+    this->description = description;
+    this->calories = calories;
+    this->weight = weight;
+}
+
+std::string Item::getName() const { return name; }
+std::string Item::getDescription() const { return description; }
+int Item::getCalories() const { return calories; }
+float Item::getWeight() const { return weight; }
+
+std::ostream& operator<<(std::ostream& os, const Item& item) {
+    os << item.name << " (" << item.calories << " calories)- " << item.weight << " lb- " << item.description;
+    return os;
+}
+
+
+NPC::NPC(const std::string& name, const std::string& description) {
+    if (name.empty() || description.empty()) {
+        throw std::invalid_argument("Name and description cannot be blank.");
+    }
+
+    this->name = name;
+    this->description = description;
+    this->messageNumber = 0;
+    }
+    
+    std::string NPC::getName() const { return name; }
+    
+    std::string NPC::getDescription() const { return description; }
+
+    void NPC::addMessage(std::string& message) {
+        messages.push_back(message);
+    }
+
+    std::string NPC::getMessage() {
+        if (messages.empty()) {
+            return ("This NPC has no messages.");
+        }
+        std::string message = messages[messageNumber];
+        messageNumber = (messageNumber + 1) % messages.size();
+        return message;
+    }
+
+    std::ostream& operator<<(std::ostream& os, const NPC& npc) {
+        os << npc.name;
+        return os;
+    }
+
+Location::Location(const std::string& name, const std::string& description) {
+    if (name.empty() || description.empty()) throw std::invalid_argument("Name and description cannot be blank.");
+    this->name = name;
+    this->description = description;
+    this->visited = false;
+    }
+    
+    std::map<std::string, Location*> Location::get_locations() const { return neighbors;}
+
+    void Location::add_location(std::string& direction, Location* location){
+        if (direction.empty()){
+            throw std::invalid_argument("Direction cannot be empty.");
+        }
+        if (neighbors.count(direction) > 0){
+            throw std::invalid_argument("That direction is already mapped for this location.");
+        }
+        neighbors[direction] = location;
+    }
+
+    void Location::add_npc(NPC npc){
+        npcs.push_back(npc);
+    }
+
+    std::vector<NPC> Location::get_npcs() const { return npcs;}
+
+    void Location::add_item(Item& item){
+        items.push_back(item);
+    }
+
+    std::vector<Item> Location::get_items() const { return items;}
+
+    void Location::set_visited(){
+        visited = true;
+    }
+
+    bool Location::get_visited() const {
+        if (this->visited) {
+            return true;
+        }
+        return false;
+    }
+
+    std::ostream& operator<<(std::ostream& os, const Location& location) {
+        // Location name and description
+        os << location.name << "- " << location.description << "\n\n";
+
+        // List NPCs
+        os << "You see the following NPCs:\n";
+        if (location.npcs.empty()) {
+            os << "- None\n";
+        } else {
+            for (const NPC& npc : location.npcs) {
+                os << "- " << npc << "\n";
+            }
+        }
+
+        // List items
+        os << "\nYou see the following Items:\n";
+        if (location.items.empty()) {
+            os << "- None\n";
+        } else {
+            for (const Item& item : location.items) {
+                os << "- " << item.getName() << " (" << item.getCalories() << " calories) - "
+                   << item.getWeight() << " lb- " << item.getDescription() << "\n";
+            }
+        }
+
+        // List directions
+        os << "\nYou can go in the following Directions:\n";
+        if (location.neighbors.empty()) {
+            os << "- None\n";
+        } else {
+            for (const auto& neighbor : location.neighbors) {
+                os << "- " << neighbor.first << "- "
+                   << (neighbor.second->get_visited() ? neighbor.second->name : "Unknown")
+                   << (neighbor.second->get_visited() ? " (Visited)" : "") << "\n";
+            }
+        }
+
+        return os;
+    }
+
+
+
+    Game::Game() {
     // Define main commands
     commands["drink"] = std::bind(&Game::drink, this, std::placeholders::_1);
     commands["help"] = std::bind(&Game::showHelp, this, std::placeholders::_1);
