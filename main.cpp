@@ -85,7 +85,7 @@ Location::Location(const std::string& name, const std::string& description) {
         npcs.push_back(npc);
     }
 
-    std::vector<NPC> Location::get_npcs() const { return npcs;}
+    std::vector<NPC> Location::get_npcs() const { return npcs; }
 
     void Location::add_item(Item& item){
         items.push_back(item);
@@ -147,25 +147,7 @@ Location::Location(const std::string& name, const std::string& description) {
 
 
 Game::Game() {
-    // Define main commands
-    // commands["drink"] = std::bind(&Game::drink, this, std::placeholders::_1);
-    // commands["help"] = std::bind(&Game::showHelp, this, std::placeholders::_1);
-    // commands["look"] = std::bind(&Game::look, this, std::placeholders::_1);
-    // commands["move"] = std::bind(&Game::move, this, std::placeholders::_1);
-    // commands["quit"] = std::bind(&Game::quit, this, std::placeholders::_1);
-    // commands["talk"] = std::bind(&Game::talk, this, std::placeholders::_1);
 
-    // // Define aliases for commands
-    // commandAliases["go"] = "move";
-    // commandAliases["walk"] = "move";
-    // commandAliases["run"] = "move";
-    // commandAliases["exit"] = "quit";
-    // commandAliases["speak"] = "talk";
-    // commandAliases["chat"] = "talk";
-    // commandAliases["view"] = "look";
-    // commandAliases["observe"] = "look";
-    // commandAliases["consume"] = "drink";
-    // commandAliases["chug"] = "drink";
     commands = setup_commands();
     createWorld();
     currentWeight = 0;
@@ -175,20 +157,21 @@ Game::Game() {
     drunkness = 0;
     }
 
-    std::map<std::string, void(*)(std::vector<std::string>)> setup_commands(){
-        std::map<std::string, std::function<void(*)(std::vector<std::string>)>> commands;
-        commands["help"] = [this](std::vector<std::string> target) { showHelp(target); };
-        commands["talk"] = [this](std::vector<std::string> target) { talk(target); };
-        commands["take"] = [this](std::vector<std::string> target) { take(target); };
-        commands["give"] = [this](std::vector<std::string> target) { give(target); };
-        commands["go"] = [this](std::vector<std::string> target) { go(target); };
-        commands["look"] = [this](std::vector<std::string> target) { look(target); };
-        commands["quit"] = [this](std::vector<std::string> target) { quit(target); };
+std::map<std::string, std::function<void(std::vector<std::string>)>> Game::setup_commands() {
+    std::map<std::string, std::function<void(std::vector<std::string>)>> commands;
 
-        return commands
+    commands["help"] = [this](std::vector<std::string> target) { showHelp(target); };
+    commands["talk"] = [this](std::vector<std::string> target) { talk(target); };
+    commands["take"] = [this](std::vector<std::string> target) { take(target); };
+    commands["give"] = [this](std::vector<std::string> target) { give(target); };
+    commands["go"]   = [this](std::vector<std::string> target) { go(target); };
+    commands["look"] = [this](std::vector<std::string> target) { look(target); };
+    commands["quit"] = [this](std::vector<std::string> target) { quit(target); };
+    commands["help"] = [this](std::vector<std::string> target) { showHelp(target); };
 
-    }
 
+    return commands;
+}
 
 
 void Game::normalizeCommand(std::string& command) {
@@ -212,10 +195,13 @@ void Game::executeCommand(std::string command, std::vector<std::string> args) {
 }
 
 // Dummy implementation lambdas for now
-void Game::drink(std::vector<std::string> args) { std::cout << "You take a sip... or maybe chug it all!" << std::endl; }
+void Game::drink(std::vector<std::string> args) {
+  std::cout << "You take a sip... or maybe chug it all!" << std::endl;
+}
 void Game::look(std::vector<std::string> args) { std::cout << "Looking around..." << std::endl; }
-void Game::move(std::vector<std::string> args) { std::cout << "You move to a new location." << std::endl; }
-void Game::createWorld() { std::cout << "Creating the world..." << std::endl; }
+void Game::createWorld() {
+  std::cout << "Creating the world..." << std::endl;
+}
 void Game::quit(std::vector<std::string> args) { std::cout << "Quitting game..." << std::endl; exit(0); }
 void Game::showHelp(std::vector<std::string> args) {
     std::cout << "Available commands:" << std::endl;
@@ -223,7 +209,27 @@ void Game::showHelp(std::vector<std::string> args) {
         std::cout << " - " << cmd.first << std::endl;
     }
 }
+
 void Game::talk(std::vector<std::string> args) { std::cout << "You start a conversation..." << std::endl; }
+Location* Game::randomLocation() {
+    // This should return a random Location, replace this with actual logic
+    return &locations[0];  // Example: return the first location
+}
+
+void Game::go(std::vector<std::string> target) {
+    std::cout << "You go in that direction." << std::endl;
+    // Add the logic for moving the player to a new location
+}
+
+void Game::give(std::vector<std::string> target) {
+    std::cout << "You give an item." << std::endl;
+    // Implement giving logic here
+}
+
+void Game::take(std::vector<std::string> target) {
+    std::cout << "You take an item." << std::endl;
+    // Implement taking logic here
+}
 
 void Game::play() {
     std::cout << "Starting the game..." << std::endl;

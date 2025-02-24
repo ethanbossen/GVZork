@@ -13,11 +13,6 @@
 #include <stdexcept>
 #include <functional>
 
-// each item has an appropriate slot in the overall guitar, once every slot if filled then the
-// guitar is complete, i.e. the player can collect multiple bridge pickups but only one can be in
-// the guitar at a time. The player also has limited pocket space and will only be able to hold
-// about 4 parts at once or like one body of a guitar
-
 class Item {
 private:
     std::string name;
@@ -84,7 +79,7 @@ public:
 
 
 private:
-    std::map<std::string, std::function<void(*)(std::vector<std::string>)>> commands;
+    std::map<std::string, std::function<void(std::vector<std::string>)>> commands;
     std::vector<Item> inventory;
     int currentWeight;
     std::vector<Location> locations;
@@ -93,9 +88,9 @@ private:
     bool inProgress;
     int drunkness;
     void createWorld();
-    std::map<std::string, std::function<void(*)(std::vector<std::string>)>> setup_commands();
+    std::map<std::string, std::function<void(std::vector<std::string>)>> setup_commands();
     Location* randomLocation();
-    void showHelp();
+    void showHelp(std::vector<std::string> args);
     void talk(std::vector<std::string> target);
     void meet(std::vector<std::string> target);
     void take(std::vector<std::string> target);
@@ -104,6 +99,7 @@ private:
     void showItems(std::vector<std::string> target);
     void look(std::vector<std::string> target);
     void quit(std::vector<std::string> target);
+    void drink(std::vector<std::string> target);
     std::map<std::string, std::string> commandAliases;
 };
 
