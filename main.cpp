@@ -161,12 +161,14 @@ std::map<std::string, std::function<void(std::vector<std::string>)>> Game::setup
     std::map<std::string, std::function<void(std::vector<std::string>)>> commands;
 
     commands["help"] = [this](std::vector<std::string> target) { showHelp(target); };
+     commands["show help"] = [this](std::vector<std::string> target) { showHelp(target); };
     commands["talk"] = [this](std::vector<std::string> target) { talk(target); };
     commands["take"] = [this](std::vector<std::string> target) { take(target); };
     commands["give"] = [this](std::vector<std::string> target) { give(target); };
     commands["go"]   = [this](std::vector<std::string> target) { go(target); };
     commands["look"] = [this](std::vector<std::string> target) { look(target); };
     commands["quit"] = [this](std::vector<std::string> target) { quit(target); };
+    commands["exit"] = [this](std::vector<std::string> target) { quit(target); };
     commands["help"] = [this](std::vector<std::string> target) { showHelp(target); };
 
 
