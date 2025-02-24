@@ -75,8 +75,6 @@ public:
     void play();
     void executeCommand(std::string command, std::vector<std::string> args);
     void normalizeCommand(std::string& command);
-    
-
 
 private:
     std::map<std::string, std::function<void(std::vector<std::string>)>> commands;
@@ -100,7 +98,6 @@ private:
     void look(std::vector<std::string> target);
     void quit(std::vector<std::string> target);
     void drink(std::vector<std::string> target);
-    std::map<std::string, std::string> commandAliases;
 };
 
 #endif
