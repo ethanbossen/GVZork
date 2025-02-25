@@ -59,10 +59,10 @@ private:
 public:
     Location(const std::string& name, const std::string& description);
     std::map<std::string, Location*> get_locations() const;
-    void add_location(std::string& direction, Location* location);
+    void add_location(const std::string& direction, Location* location);
     void add_npc(NPC npc);
     std::vector<NPC> get_npcs() const;
-    void add_item(Item& item);
+    void add_item(const Item& item);
     std::vector<Item> get_items() const;
     void set_visited();
     bool get_visited() const;
@@ -75,6 +75,8 @@ public:
     void play();
     void executeCommand(std::string command, std::vector<std::string> args);
     void normalizeCommand(std::string& command);
+    
+
 
 private:
     std::map<std::string, std::function<void(std::vector<std::string>)>> commands;
@@ -98,6 +100,7 @@ private:
     void look(std::vector<std::string> target);
     void quit(std::vector<std::string> target);
     void drink(std::vector<std::string> target);
+    std::map<std::string, std::string> commandAliases;
 };
 
 #endif
