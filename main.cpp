@@ -175,15 +175,15 @@ Game::Game() {
     drunkness = 0;
     }
 
-    std::map<std::string, void(*)(std::vector<std::string>)> setup_commands(){
-        std::map<std::string, std::function<void(*)(std::vector<std::string>)>> commands;
-        commands["help"] = Game::showHelp;
-        commands["talk"] = [this](std::vector<std::string> target) { talk(target); };
-        commands["take"] = [this](std::vector<std::string> target) { take(target); };
-        commands["give"] = [this](std::vector<std::string> target) { give(target); };
-        commands["go"] = [this](std::vector<std::string> target) { go(target); };
-        commands["look"] = [this](std::vector<std::string> target) { look(target); };
-        commands["quit"] = [this](std::vector<std::string> target) { quit(target); };
+    std::map<std::string, std::function<void(Game*, std::vector<std::string>)>> setup_commands(){
+        std::map<std::string, std::function<void(Game*, std::vector<std::string>)>> commands;
+        commands.insert(std::make_pair("help", &Game::showHelp));
+        commands.insert(std::make_pair("talk", &Game::talk));
+        commands.insert(std::make_pair("meet", &Game::meet));
+        commands.insert(std::make_pair("take", &Game::take));
+        commands.insert(std::make_pair("give", &Game::give));
+        commands.insert(std::make_pair("go", &Game::go));
+        commands.insert(std::make_pair("look", &Game::look));
 
         return commands;
 

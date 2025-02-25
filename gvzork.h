@@ -75,8 +75,16 @@ public:
     void play();
     void executeCommand(std::string command, std::vector<std::string> args);
     void normalizeCommand(std::string& command);
-    
-
+    void showHelp(std::vector<std::string> args);
+    void talk(std::vector<std::string> target);
+    void meet(std::vector<std::string> target);
+    void take(std::vector<std::string> target);
+    void give(std::vector<std::string> target);
+    void go(std::vector<std::string> target);
+    void showItems(std::vector<std::string> target);
+    void look(std::vector<std::string> target);
+    void quit(std::vector<std::string> target);
+    void drink(std::vector<std::string> target);
 
 private:
     std::map<std::string, std::function<void(std::vector<std::string>)>> commands;
@@ -90,16 +98,16 @@ private:
     void createWorld();
     std::map<std::string, std::function<void(std::vector<std::string>)>> setup_commands();
     Location* randomLocation();
-    void showHelp(std::vector<std::string> args);
-    void talk(std::vector<std::string> target);
-    void meet(std::vector<std::string> target);
-    void take(std::vector<std::string> target);
-    void give(std::vector<std::string> target);
-    void go(std::vector<std::string> target);
-    void showItems(std::vector<std::string> target);
-    void look(std::vector<std::string> target);
-    void quit(std::vector<std::string> target);
-    void drink(std::vector<std::string> target);
+    // void showHelp(std::vector<std::string> args);
+    // void talk(std::vector<std::string> target);
+    // void meet(std::vector<std::string> target);
+    // void take(std::vector<std::string> target);
+    // void give(std::vector<std::string> target);
+    // void go(std::vector<std::string> target);
+    // void showItems(std::vector<std::string> target);
+    // void look(std::vector<std::string> target);
+    // void quit(std::vector<std::string> target);
+    // void drink(std::vector<std::string> target);
     std::map<std::string, std::string> commandAliases;
 };
 
