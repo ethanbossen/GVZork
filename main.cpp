@@ -263,18 +263,9 @@ Game::Game() {
 }
 
 
-void Game::normalizeCommand(std::string& command) {
-    // Convert command to lowercase (optional for case insensitivity)
-    std::transform(command.begin(), command.end(), command.begin(), ::tolower);
-
-    // Check if command has an alias
-    if (commandAliases.find(command) != commandAliases.end()) {
-        command = commandAliases[command];  // Normalize to the main command
-    }
-}
 
 void Game::executeCommand(std::string command, std::vector<std::string> args) {
-    normalizeCommand(command);  // Convert aliases to proper commands
+     std::transform(command.begin(), command.end(), command.begin(), ::tolower);
 
     if (commands.find(command) != commands.end()) {
         commands[command](args);
