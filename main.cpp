@@ -71,7 +71,7 @@ Location::Location(const std::string& name, const std::string& description) {
     
     std::map<std::string, Location*> Location::get_locations() const { return neighbors;}
 
-    void Location::add_location(std::string& direction, Location* location){
+    void Location::add_location(const std::string& direction, Location* location){
         if (direction.empty()){
             throw std::invalid_argument("Direction cannot be empty.");
         }
@@ -87,7 +87,7 @@ Location::Location(const std::string& name, const std::string& description) {
 
     std::vector<NPC> Location::get_npcs() const { return npcs;}
 
-    void Location::add_item(Item& item){
+    void Location::add_item(const Item& item){
         items.push_back(item);
     }
 
