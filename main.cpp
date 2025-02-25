@@ -184,6 +184,7 @@ Game::Game() {
         commands.insert(std::make_pair("give", &Game::give));
         commands.insert(std::make_pair("go", &Game::go));
         commands.insert(std::make_pair("look", &Game::look));
+        commands.insert(std::make_pair("quit", &Game::quit));
 
         return commands;
 
@@ -265,10 +266,10 @@ Game::Game() {
 
 
 void Game::executeCommand(std::string command, std::vector<std::string> args) {
-     std::transform(command.begin(), command.end(), command.begin(), ::tolower);
+    std::transform(command.begin(), command.end(), command.begin(), ::tolower);
 
     if (commands.find(command) != commands.end()) {
-        commands[command](args);
+        commands[command](this, args);  // Pass 'this' to refer to the current instance of the Game class
     } else {
         std::cout << "Unknown command! Type 'help' for a list of commands." << std::endl;
     }
