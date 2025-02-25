@@ -87,7 +87,7 @@ public:
     void drink(std::vector<std::string> target);
 
 private:
-    std::map<std::string, std::function<void(std::vector<std::string>)>> commands;
+    std::map<std::string, std::function<void(Game*, std::vector<std::string>)>> commands;
     std::vector<Item> inventory;
     int currentWeight;
     std::vector<Location> locations;
@@ -96,8 +96,8 @@ private:
     bool inProgress;
     int drunkness;
     void createWorld();
-    std::map<std::string, std::function<void(std::vector<std::string>)>> setup_commands();
-    Location* randomLocation();
+    std::map<std::string, std::function<void(Game*, std::vector<std::string>)>> setup_commands();
+    // Location* randomLocation();
     // void showHelp(std::vector<std::string> args);
     // void talk(std::vector<std::string> target);
     // void meet(std::vector<std::string> target);

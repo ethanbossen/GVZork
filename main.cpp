@@ -171,11 +171,11 @@ Game::Game() {
     currentWeight = 0;
     caloriesNeeded = 500;
     inProgress = true;
-    currentLocation = randomLocation();
+    // currentLocation = randomLocation();
     drunkness = 0;
     }
 
-    std::map<std::string, std::function<void(Game*, std::vector<std::string>)>> setup_commands(){
+    std::map<std::string, std::function<void(Game*, std::vector<std::string>)>> Game::setup_commands(){
         std::map<std::string, std::function<void(Game*, std::vector<std::string>)>> commands;
         commands.insert(std::make_pair("help", &Game::showHelp));
         commands.insert(std::make_pair("talk", &Game::talk));
@@ -190,7 +190,7 @@ Game::Game() {
     }
 
 
-void Game::createWorld() {
+    void Game::createWorld() {
     // Create locations
     Location* kirkhoffUpstairs = new Location("Kirkhoff Upstairs", "The student union. There are restaurants, a store, and places to congregate.");
     Location* kirkhoffDownstairs = new Location("Kirkhoff Downstairs", "The lower level of the student union. It’s quieter here, with study areas and vending machines.");
@@ -286,8 +286,8 @@ void Game::executeCommand(std::string command, std::vector<std::string> args) {
 // Dummy implementation lambdas for now
 void Game::drink(std::vector<std::string> args) { std::cout << "You take a sip... or maybe chug it all!" << std::endl; }
 void Game::look(std::vector<std::string> args) { std::cout << "Looking around..." << std::endl; }
-void Game::move(std::vector<std::string> args) { std::cout << "You move to a new location." << std::endl; }
-void Game::createWorld() { std::cout << "Creating the world..." << std::endl; }
+// void Game::move(std::vector<std::string> args) { std::cout << "You move to a new location." << std::endl; }
+// void Game::createWorld() { std::cout << "Creating the world..." << std::endl; }
 void Game::quit(std::vector<std::string> args) { std::cout << "Quitting game..." << std::endl; exit(0); }
 void Game::showHelp(std::vector<std::string> args) {
     std::cout << "Available commands:" << std::endl;
@@ -296,6 +296,12 @@ void Game::showHelp(std::vector<std::string> args) {
     }
 }
 void Game::talk(std::vector<std::string> args) { std::cout << "You start a conversation..." << std::endl; }
+void Game::meet(std::vector<std::string> target) { std::cout << "You start a conversation..." << std::endl; }
+void Game::take(std::vector<std::string> target) { std::cout << "You start a conversation..." << std::endl; }
+void Game::give(std::vector<std::string> target) { std::cout << "You start a conversation..." << std::endl; }
+void Game::go(std::vector<std::string> target) { std::cout << "You start a conversation..." << std::endl; }
+void Game::showItems(std::vector<std::string> target) { std::cout << "You start a conversation..." << std::endl; }
+// Location* Game::randomLocation() { std::cout << "You start a conversation..." << std::endl; }
 
 void Game::play() {
     std::cout << "Starting the game..." << std::endl;
