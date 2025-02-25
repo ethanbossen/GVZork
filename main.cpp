@@ -177,7 +177,7 @@ Game::Game() {
 
     std::map<std::string, void(*)(std::vector<std::string>)> setup_commands(){
         std::map<std::string, std::function<void(*)(std::vector<std::string>)>> commands;
-        commands["help"] = [this](std::vector<std::string> target) { showHelp(target); };
+        commands["help"] = Game::showHelp;
         commands["talk"] = [this](std::vector<std::string> target) { talk(target); };
         commands["take"] = [this](std::vector<std::string> target) { take(target); };
         commands["give"] = [this](std::vector<std::string> target) { give(target); };
@@ -185,7 +185,7 @@ Game::Game() {
         commands["look"] = [this](std::vector<std::string> target) { look(target); };
         commands["quit"] = [this](std::vector<std::string> target) { quit(target); };
 
-        return commands
+        return commands;
 
     }
 
