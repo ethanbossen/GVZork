@@ -97,7 +97,7 @@ private:
     int drunkness;
     void createWorld();
     std::map<std::string, std::function<void(Game*, std::vector<std::string>)>> setup_commands();
-    // Location* randomLocation();
+    Location* randomLocation();
     // void showHelp(std::vector<std::string> args);
     // void talk(std::vector<std::string> target);
     // void meet(std::vector<std::string> target);

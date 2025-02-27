@@ -153,7 +153,7 @@ Game::Game() {
     currentWeight = 0;
     caloriesNeeded = 500;
     inProgress = true;
-    // currentLocation = randomLocation();
+    currentLocation = randomLocation();
     drunkness = 0;
     }
 
@@ -260,7 +260,6 @@ void Game::executeCommand(std::string command, std::vector<std::string> args) {
 // Dummy implementation lambdas for now
 void Game::drink(std::vector<std::string> args) { std::cout << "You take a sip... or maybe chug it all!" << std::endl; }
 void Game::look(std::vector<std::string> args) { std::cout << "Looking around..." << std::endl; }
-// void Game::move(std::vector<std::string> args) { std::cout << "You move to a new location." << std::endl; }
 // void Game::createWorld() { std::cout << "Creating the world..." << std::endl; }
 void Game::quit(std::vector<std::string> args) { std::cout << "Quitting game..." << std::endl; exit(0); }
 void Game::showHelp(std::vector<std::string> args) {
@@ -275,7 +274,17 @@ void Game::take(std::vector<std::string> target) { std::cout << "You start a con
 void Game::give(std::vector<std::string> target) { std::cout << "You start a conversation..." << std::endl; }
 void Game::go(std::vector<std::string> target) { std::cout << "You start a conversation..." << std::endl; }
 void Game::showItems(std::vector<std::string> target) { std::cout << "You start a conversation..." << std::endl; }
-// Location* Game::randomLocation() { std::cout << "You start a conversation..." << std::endl; }
+
+Location* Game::randomLocation() {
+    if (locations.empty()) {
+        return nullptr;  // Handle the case where the vector is empty
+    }
+
+    std::srand(std::time(nullptr));  // Seed the random number generator
+    int randomIndex = std::rand() % locations.size();  // Get a random index
+
+    return &locations[randomIndex];  // Return a pointer to the random location
+}
 
 void Game::play() {
     std::cout << "Starting the game..." << std::endl;
