@@ -147,25 +147,7 @@ Location::Location(const std::string& name, const std::string& description) {
 
 
 Game::Game() {
-    // Define main commands
-    // commands["drink"] = std::bind(&Game::drink, this, std::placeholders::_1);
-    // commands["help"] = std::bind(&Game::showHelp, this, std::placeholders::_1);
-    // commands["look"] = std::bind(&Game::look, this, std::placeholders::_1);
-    // commands["move"] = std::bind(&Game::move, this, std::placeholders::_1);
-    // commands["quit"] = std::bind(&Game::quit, this, std::placeholders::_1);
-    // commands["talk"] = std::bind(&Game::talk, this, std::placeholders::_1);
 
-    // // Define aliases for commands
-    // commandAliases["go"] = "move";
-    // commandAliases["walk"] = "move";
-    // commandAliases["run"] = "move";
-    // commandAliases["exit"] = "quit";
-    // commandAliases["speak"] = "talk";
-    // commandAliases["chat"] = "talk";
-    // commandAliases["view"] = "look";
-    // commandAliases["observe"] = "look";
-    // commandAliases["consume"] = "drink";
-    // commandAliases["chug"] = "drink";
     commands = setup_commands();
     createWorld();
     currentWeight = 0;
