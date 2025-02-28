@@ -83,12 +83,12 @@ public:
     void showItems(std::vector<std::string> target);
     void look(std::vector<std::string> target);
     void quit(std::vector<std::string> target);
-    void drink(std::vector<std::string> target);
+//    void drink(std::vector<std::string> target);
 
 private:
     std::map<std::string, std::function<void(Game*, std::vector<std::string>)>> commands;
-    std::vector<Item> inventory;
     int currentWeight;
+    std::vector<Item> inventory;
     std::vector<Location> locations;
     Location* currentLocation;
     int caloriesNeeded;

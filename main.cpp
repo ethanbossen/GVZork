@@ -162,10 +162,12 @@ Game::Game() {
         commands.insert(std::make_pair("help", &Game::showHelp));
         commands.insert(std::make_pair("talk", &Game::talk));
         commands.insert(std::make_pair("take", &Game::take));
+        commands.insert(std::make_pair("get", &Game::take));
         commands.insert(std::make_pair("give", &Game::give));
         commands.insert(std::make_pair("go", &Game::go));
         commands.insert(std::make_pair("look", &Game::look));
         commands.insert(std::make_pair("quit", &Game::quit));
+        commands.insert(std::make_pair("exit", &Game::quit));
 
         return commands;
 
@@ -256,8 +258,36 @@ void Game::executeCommand(std::string command, std::vector<std::string> args) {
     }
 }
 
-// Dummy implementation lambdas for now
-void Game::drink(std::vector<std::string> args) { std::cout << "You take a sip... or maybe chug it all!" << std::endl; }
+
+//void Game::drink(std::vector<std::string> args) {
+//    if (args.empty()) {
+//        std::cout << "Drink what? You need to specify an item.\n";
+//        return;
+//    }
+//
+//    std::string drinkName = args[0];
+//    auto it = std::find_if(inventory.begin(), inventory.end(), [&](const Item& item) {
+//        return item.getName() == drinkName;
+//    });
+//
+//    if (it == inventory.end()) {
+//        std::cout << "You don't have a " << drinkName << " to drink.\n";
+//        return;
+//    }
+//
+//    // Remove the item from inventory after drinking
+//    Item drink = *it;
+//    inventory.erase(it);
+//
+//    // Increase drunkness if it's an alcoholic drink
+//    if (drinkName == "Beer1" || drinkName == "Beer2" || drinkName == "Beer3") {
+//        drunkness += 1;
+//        std::cout << "You drink the " << drinkName << ". You feel a little tipsy. (Drunkness: " << drunkness << ")\n";
+//    } else {
+//        std::cout << "You drink the " << drinkName << ". Refreshing!\n";
+//    }
+//}
+
 void Game::look(std::vector<std::string> args) {
     if (currentLocation) {
         std::cout << *currentLocation << std::endl;  // Dereference the pointer
@@ -265,8 +295,9 @@ void Game::look(std::vector<std::string> args) {
         std::cout << "You are in an unknown place..." << std::endl;
     }
 }
-// void Game::createWorld() { std::cout << "Creating the world..." << std::endl; }
+
 void Game::quit(std::vector<std::string> args) { std::cout << "Quitting game..." << std::endl; exit(0); }
+
 void Game::showHelp(std::vector<std::string> args) {
     std::cout << "Available commands:" << std::endl;
     for (const auto& cmd : commands) {
