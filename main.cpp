@@ -183,7 +183,6 @@ Game::Game() {
 
     }
 
-
     void Game::createWorld() {
     // Create locations
     Location* kirkhoffUpstairs = new Location("Kirkhoff Upstairs", "The student union. There are restaurants, a store, and places to congregate.");
