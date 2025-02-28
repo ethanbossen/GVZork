@@ -381,7 +381,6 @@ void Game::go(std::vector<std::string> args) {
     // Print the new location details
     std::cout << *currentLocation << std::endl;
 }
-void Game::showItems(std::vector<std::string> target) { std::cout << "You start a conversation..." << std::endl; }
 
 Location* Game::randomLocation() {
     if (locations.empty()) {

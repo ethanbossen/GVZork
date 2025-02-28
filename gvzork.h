@@ -80,7 +80,6 @@ public:
     void take(std::vector<std::string> target);
     void give(std::vector<std::string> target);
     void go(std::vector<std::string> target);
-    void showItems(std::vector<std::string> target);
     void look(std::vector<std::string> target);
     void quit(std::vector<std::string> target);
     void showInventory(std::vector<std::string> target);
