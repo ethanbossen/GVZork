@@ -77,7 +77,6 @@ public:
     void normalizeCommand(std::string& command);
     void showHelp(std::vector<std::string> args);
     void talk(std::vector<std::string> target);
-    void meet(std::vector<std::string> target);
     void take(std::vector<std::string> target);
     void give(std::vector<std::string> target);
     void go(std::vector<std::string> target);
