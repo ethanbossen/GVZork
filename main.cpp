@@ -269,7 +269,6 @@ void Game::showHelp(std::vector<std::string> args) {
     }
 }
 void Game::talk(std::vector<std::string> args) { std::cout << "You start a conversation..." << std::endl; }
-void Game::meet(std::vector<std::string> target) { std::cout << "You start a conversation..." << std::endl; }
 void Game::take(std::vector<std::string> target) { std::cout << "You start a conversation..." << std::endl; }
 void Game::give(std::vector<std::string> target) { std::cout << "You start a conversation..." << std::endl; }
 void Game::go(std::vector<std::string> target) { std::cout << "You start a conversation..." << std::endl; }
