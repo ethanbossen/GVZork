@@ -341,6 +341,7 @@ void Game::showInventory(std::vector<std::string> args) {
             std::cout << "- " << item << std::endl;
         }
     }
+    std::cout << "Current weight: " << currentWeight << "lbs\n";
 }
 
 void Game::take(std::vector<std::string> args) {
@@ -365,6 +366,7 @@ void Game::take(std::vector<std::string> args) {
             itemFound = true;
             inventory.push_back(item);  // Add item to the inventory
             currentLocation->remove_item(item);  // Remove item from the current location
+            currentWeight += item.getWeight();
             std::cout << "You have taken the " << fullItemName << "." << std::endl;
             break;
         }

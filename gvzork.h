@@ -87,7 +87,7 @@ public:
 
 private:
     std::map<std::string, std::function<void(Game*, std::vector<std::string>)>> commands;
-    int currentWeight;
+    float currentWeight;
     const int maxWeight = 50;
     std::vector<Item> inventory;
     std::vector<Location> locations;
