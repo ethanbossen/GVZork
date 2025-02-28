@@ -161,7 +161,6 @@ Game::Game() {
         std::map<std::string, std::function<void(Game*, std::vector<std::string>)>> commands;
         commands.insert(std::make_pair("help", &Game::showHelp));
         commands.insert(std::make_pair("talk", &Game::talk));
-        commands.insert(std::make_pair("meet", &Game::meet));
         commands.insert(std::make_pair("take", &Game::take));
         commands.insert(std::make_pair("give", &Game::give));
         commands.insert(std::make_pair("go", &Game::go));
