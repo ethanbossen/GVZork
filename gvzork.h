@@ -51,12 +51,12 @@ class Location {
 private:
     std::string name;
     std::string description;
-    std::map<std::string, Location*> neighbors;
     std::vector<NPC> npcs;
     std::vector<Item> items;
     bool visited;
 
 public:
+    std::map<std::string, Location*> neighbors;
     Location(const std::string& name, const std::string& description);
     std::map<std::string, Location*> get_locations() const;
     void add_location(const std::string& direction, Location* location);

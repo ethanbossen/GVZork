@@ -258,7 +258,13 @@ void Game::executeCommand(std::string command, std::vector<std::string> args) {
 
 // Dummy implementation lambdas for now
 void Game::drink(std::vector<std::string> args) { std::cout << "You take a sip... or maybe chug it all!" << std::endl; }
-void Game::look(std::vector<std::string> args) { std::cout << "Looking around..." << std::endl; }
+void Game::look(std::vector<std::string> args) {
+    if (currentLocation) {
+        std::cout << *currentLocation << std::endl;  // Dereference the pointer
+    } else {
+        std::cout << "You are in an unknown place..." << std::endl;
+    }
+}
 // void Game::createWorld() { std::cout << "Creating the world..." << std::endl; }
 void Game::quit(std::vector<std::string> args) { std::cout << "Quitting game..." << std::endl; exit(0); }
 void Game::showHelp(std::vector<std::string> args) {
@@ -270,7 +276,28 @@ void Game::showHelp(std::vector<std::string> args) {
 void Game::talk(std::vector<std::string> args) { std::cout << "You start a conversation..." << std::endl; }
 void Game::take(std::vector<std::string> target) { std::cout << "You start a conversation..." << std::endl; }
 void Game::give(std::vector<std::string> target) { std::cout << "You start a conversation..." << std::endl; }
-void Game::go(std::vector<std::string> target) { std::cout << "You start a conversation..." << std::endl; }
+void Game::go(std::vector<std::string> args) {
+    if (args.empty()) {
+        std::cout << "Go where? Please specify a direction.\n";
+        return;
+    }
+
+    std::string direction = args[0]; // Assuming the direction is the first argument
+
+    // Check if the current location has a neighbor in that direction
+    auto it = currentLocation->neighbors.find(direction);
+    if (it == currentLocation->neighbors.end()) {
+        std::cout << "You can't go that way.\n";
+        return;
+    }
+
+    // Move to the new location
+    currentLocation = it->second;
+    currentLocation->set_visited(); // Mark as visited
+
+    // Print the new location details
+    std::cout << *currentLocation << std::endl;
+}
 void Game::showItems(std::vector<std::string> target) { std::cout << "You start a conversation..." << std::endl; }
 
 Location* Game::randomLocation() {
