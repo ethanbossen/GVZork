@@ -41,7 +41,7 @@ public:
     NPC(const std::string& name, const std::string& description);
     std::string getName() const;
     std::string getDescription() const;
-    void addMessage(std::string& message);
+    void addMessage(const std::string& message);
     std::string getMessage();
     friend std::ostream& operator<<(std::ostream& os,const NPC& npc);
 

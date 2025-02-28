@@ -44,9 +44,10 @@ NPC::NPC(const std::string& name, const std::string& description) {
     
     std::string NPC::getDescription() const { return description; }
 
-    void NPC::addMessage(std::string& message) {
-        messages.push_back(message);
-    }
+
+	void NPC::addMessage(const std::string& message) {
+    messages.push_back(message);  // Add the message to the vector
+}
 
     std::string NPC::getMessage() {
         if (messages.empty()) {
@@ -85,7 +86,7 @@ Location::Location(const std::string& name, const std::string& description) {
         npcs.push_back(npc);
     }
 
-    std::vector<NPC> Location::get_npcs() const { return npcs;}
+    std::vector<NPC> Location::get_npcs() const { return npcs ;}
 
     void Location::add_item(const Item& item){
         items.push_back(item);
@@ -220,14 +221,47 @@ Game::Game() {
     scienceBuilding->add_item(Item("Banana", "A ripe banana. It’s easy to eat on the go.", 105, 0.3));
 
     // Add NPCs to locations
-    kirkhoffDownstairs->add_npc(NPC("Janitor", "A tired-looking janitor cleaning the floors."));
-    library->add_npc(NPC("Librarian", "A stern librarian who shushes anyone who talks too loudly."));
-    woods->add_npc(NPC("Elf", "A mysterious elf who needs your help."));
-    dormitory->add_npc(NPC("Roommate", "Your friendly roommate, always ready to chat."));
-    cafeteria->add_npc(NPC("Chef", "A cheerful chef cooking up a storm in the cafeteria."));
-    parkingLot->add_npc(NPC("Security Guard", "A vigilant security guard patrolling the parking lot."));
-    scienceBuilding->add_npc(NPC("Professor", "A busy professor rushing to their next class."));
+  // Kirkhoff Downstairs
+NPC janitor("Janitor", "A tired-looking janitor cleaning the floors.");
+janitor.addMessage("Keep it quiet down here, I need to focus.");
+janitor.addMessage("I’m just trying to get through the day.");
+kirkhoffDownstairs->add_npc(janitor);
 
+// Library
+NPC librarian("Librarian", "A stern librarian who shushes anyone who talks too loudly.");
+librarian.addMessage("Shh... Keep the noise down in the library.");
+librarian.addMessage("If you’re looking for a book, let me know.");
+library->add_npc(librarian);
+
+// Woods
+NPC elf("Elf", "A mysterious elf who needs your help.");
+elf.addMessage("The forest whispers secrets... Are you ready to listen?");
+elf.addMessage("I can help you, but it will cost you.");
+woods->add_npc(elf);
+
+// Dormitory
+NPC roommate("Roommate", "Your friendly roommate, always ready to chat.");
+roommate.addMessage("Hey! You getting settled in?");
+roommate.addMessage("I’ve got the pizza ordered, we’re gonna have a great night.");
+dormitory->add_npc(roommate);
+
+// Cafeteria
+NPC chef("Chef", "A cheerful chef cooking up a storm in the cafeteria.");
+chef.addMessage("The food here is great, but the secret is in the seasoning.");
+chef.addMessage("You should try the special of the day!");
+cafeteria->add_npc(chef);
+
+// Parking Lot
+NPC securityGuard("Security Guard", "A vigilant security guard patrolling the parking lot.");
+securityGuard.addMessage("Watch your step around here. I’ve seen some strange things.");
+securityGuard.addMessage("If you see anything suspicious, let me know.");
+parkingLot->add_npc(securityGuard);
+
+// Science Building
+NPC professor("Professor", "A busy professor rushing to their next class.");
+professor.addMessage("I’m late for my lecture, but can I help you with something?");
+professor.addMessage("You look like someone who appreciates a good experiment.");
+scienceBuilding->add_npc(professor);
     // Connect locations
     kirkhoffUpstairs->add_location("downstairs", kirkhoffDownstairs);
     kirkhoffDownstairs->add_location("upstairs", kirkhoffUpstairs);
@@ -357,8 +391,9 @@ void Game::take(std::vector<std::string> args) {
     }
 }
 
-
 void Game::give(std::vector<std::string> target) { std::cout << "You start a conversation..." << std::endl; }
+
+
 void Game::go(std::vector<std::string> args) {
     if (args.empty()) {
         std::cout << "Go where? Please specify a direction.\n";
@@ -393,7 +428,39 @@ Location* Game::randomLocation() {
     return &locations[randomIndex];  // Return a pointer to the random location
 }
 
-void Game::talk(std::vector<std::string> args) { std::cout << "You start a conversation..." << std::endl; }
+void Game::talk(std::vector<std::string> args) {
+
+    if (!currentLocation) {
+        std::cout << "No locations available to talk to." << std::endl;
+        return;
+    }
+
+    // Check if there are any NPCs in the current location
+    std::vector<NPC> npcs = currentLocation->get_npcs();
+    if (npcs.empty()) {
+        std::cout << "There are no NPCs to talk to in this location." << std::endl;
+        return;
+    }
+
+    // Handle talking to the NPCs
+    if (args.empty()) {
+        std::cout << "You need to specify which NPC to talk to." << std::endl;
+        return;
+    }
+
+    // Find the NPC to talk to
+    std::string npcName = args[0];
+    for (auto& npc : npcs) {
+        if (npc.getName() == npcName) {
+            std::cout << "You start a conversation with " << npc.getName() << "..." << std::endl;
+            std::cout << npc.getMessage() << std::endl;
+            return;
+        }
+    }
+
+    // If no NPC is found with the specified name
+    std::cout << "No NPC named " << npcName << " in this location." << std::endl;
+}
 
 void Game::play() {
     std::cout << "Starting the game..." << std::endl;
