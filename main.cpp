@@ -155,7 +155,6 @@ Location::Location(const std::string& name, const std::string& description) {
 
 
 Game::Game() {
-
     commands = setup_commands();
     createWorld();
     currentWeight = 0;
@@ -163,129 +162,115 @@ Game::Game() {
     inProgress = true;
     currentLocation = randomLocation();
     drunkness = 0;
+
+    if (currentLocation) {
+        currentLocation->set_visited();
     }
+}
 
-    std::map<std::string, std::function<void(Game*, std::vector<std::string>)>> Game::setup_commands(){
-        std::map<std::string, std::function<void(Game*, std::vector<std::string>)>> commands;
-        commands.insert(std::make_pair("help", &Game::showHelp));
-        commands.insert(std::make_pair("talk", &Game::talk));
-        commands.insert(std::make_pair("take", &Game::take));
-        commands.insert(std::make_pair("get", &Game::take));
-        commands.insert(std::make_pair("give", &Game::give));
-        commands.insert(std::make_pair("go", &Game::go));
-        commands.insert(std::make_pair("look", &Game::look));
-        commands.insert(std::make_pair("quit", &Game::quit));
-        commands.insert(std::make_pair("exit", &Game::quit));
-        commands.insert(std::make_pair("i", &Game::showInventory));
+std::map<std::string, std::function<void(Game*, std::vector<std::string>)>> Game::setup_commands() {
+    std::map<std::string, std::function<void(Game*, std::vector<std::string>)>> commands;
+    commands.insert(std::make_pair("help", &Game::showHelp));
+    commands.insert(std::make_pair("talk", &Game::talk));
+    commands.insert(std::make_pair("take", &Game::take));
+    commands.insert(std::make_pair("get", &Game::take));
+    commands.insert(std::make_pair("give", &Game::give));
+    commands.insert(std::make_pair("go", &Game::go));
+    commands.insert(std::make_pair("look", &Game::look));
+    commands.insert(std::make_pair("quit", &Game::quit));
+    commands.insert(std::make_pair("exit", &Game::quit));
+    commands.insert(std::make_pair("i", &Game::showInventory));
 
+    return commands;
+}
 
-        return commands;
-
-    }
-
-    void Game::createWorld() {
-    // Create locations
-    Location* kirkhoffUpstairs = new Location("Kirkhoff Upstairs", "The student union. There are restaurants, a store, and places to congregate.");
-    Location* kirkhoffDownstairs = new Location("Kirkhoff Downstairs", "The lower level of the student union. It’s quieter here, with study areas and vending machines.");
-    Location* library = new Location("Library", "A quiet place filled with books and study spaces. The air smells like old paper.");
-    Location* woods = new Location("Woods", "A dense forest behind campus. The trees are tall, and the air is fresh. This is where the elf resides.");
-    Location* dormitory = new Location("Dormitory", "A cozy dorm room with a bed, desk, and mini-fridge. It feels like home.");
-    Location* cafeteria = new Location("Cafeteria", "A bustling area with long tables and a variety of food options. The smell of food fills the air.");
-    Location* parkingLot = new Location("Parking Lot", "A large open area filled with cars. It’s noisy and smells like gasoline.");
-    Location* scienceBuilding = new Location("Science Building", "A modern building with labs and classrooms. The hallways are quiet and sterile.");
+void Game::createWorld() {
+    // Create locations and add them to the vector
+    locations.push_back(Location("Kirkhoff Upstairs", "The student union. There are restaurants, a store, and places to congregate."));
+    locations.push_back(Location("Kirkhoff Downstairs", "The lower level of the student union. It’s quieter here, with study areas and vending machines."));
+    locations.push_back(Location("Library", "A quiet place filled with books and study spaces. The air smells like old paper."));
+    locations.push_back(Location("Woods", "A dense forest behind campus. The trees are tall, and the air is fresh. This is where the elf resides."));
+    locations.push_back(Location("Dormitory", "A cozy dorm room with a bed, desk, and mini-fridge. It feels like home."));
+    locations.push_back(Location("Cafeteria", "A bustling area with long tables and a variety of food options. The smell of food fills the air."));
+    locations.push_back(Location("Parking Lot", "A large open area filled with cars. It’s noisy and smells like gasoline."));
+    locations.push_back(Location("Science Building", "A modern building with labs and classrooms. The hallways are quiet and sterile."));
 
     // Add items to locations
-    kirkhoffUpstairs->add_item(Item("Sandwich", "A tasty sandwich with ham and cheese.", 300, 0.5));
-    kirkhoffUpstairs->add_item(Item("Coffee", "A hot cup of coffee. It smells amazing.", 5, 0.3));
+    locations[0].add_item(Item("Sandwich", "A tasty sandwich with ham and cheese.", 300, 0.5));
+    locations[0].add_item(Item("Coffee", "A hot cup of coffee. It smells amazing.", 5, 0.3));
 
-    kirkhoffDownstairs->add_item(Item("Chips", "A bag of salty potato chips.", 150, 0.2));
-    kirkhoffDownstairs->add_item(Item("Soda", "A cold can of soda. It’s fizzy and refreshing.", 140, 0.4));
+    locations[1].add_item(Item("Chips", "A bag of salty potato chips.", 150, 0.2));
+    locations[1].add_item(Item("Soda", "A cold can of soda. It’s fizzy and refreshing.", 140, 0.4));
 
-    library->add_item(Item("Book", "A heavy textbook. It’s not edible.", 0, 3.0));
-    library->add_item(Item("Apple", "A fresh, juicy apple.", 95, 0.3));
+    locations[2].add_item(Item("Book", "A heavy textbook. It’s not edible.", 0, 3.0));
+    locations[2].add_item(Item("Apple", "A fresh, juicy apple.", 95, 0.3));
 
-    woods->add_item(Item("Mushroom", "A strange-looking mushroom. It might be poisonous.", 0, 0.1));
-    woods->add_item(Item("Berries", "A handful of wild berries. They look delicious.", 50, 0.2));
+    locations[3].add_item(Item("Mushroom", "A strange-looking mushroom. It might be poisonous.", 0, 0.1));
+    locations[3].add_item(Item("Berries", "A handful of wild berries. They look delicious.", 50, 0.2));
 
-    dormitory->add_item(Item("Pizza", "A slice of pepperoni pizza. It’s still warm.", 285, 0.6));
-    dormitory->add_item(Item("Energy Drink", "A can of energy drink. It promises to keep you awake.", 110, 0.5));
+    locations[4].add_item(Item("Pizza", "A slice of pepperoni pizza. It’s still warm.", 285, 0.6));
+    locations[4].add_item(Item("Energy Drink", "A can of energy drink. It promises to keep you awake.", 110, 0.5));
 
-    cafeteria->add_item(Item("Salad", "A healthy bowl of salad with lettuce and tomatoes.", 100, 0.4));
-    cafeteria->add_item(Item("Bread", "A loaf of freshly baked bread.", 200, 0.8));
+    locations[5].add_item(Item("Salad", "A healthy bowl of salad with lettuce and tomatoes.", 100, 0.4));
+    locations[5].add_item(Item("Bread", "A loaf of freshly baked bread.", 200, 0.8));
 
-    parkingLot->add_item(Item("Granola Bar", "A chewy granola bar. It’s packed with oats and honey.", 120, 0.2));
-    parkingLot->add_item(Item("Water Bottle", "A bottle of water. It’s essential for hydration.", 0, 0.5));
+    locations[6].add_item(Item("Granola Bar", "A chewy granola bar. It’s packed with oats and honey.", 120, 0.2));
+    locations[6].add_item(Item("Water Bottle", "A bottle of water. It’s essential for hydration.", 0, 0.5));
 
-    scienceBuilding->add_item(Item("Protein Bar", "A high-protein bar. It’s dense and filling.", 200, 0.3));
-    scienceBuilding->add_item(Item("Banana", "A ripe banana. It’s easy to eat on the go.", 105, 0.3));
+    locations[7].add_item(Item("Protein Bar", "A high-protein bar. It’s dense and filling.", 200, 0.3));
+    locations[7].add_item(Item("Banana", "A ripe banana. It’s easy to eat on the go.", 105, 0.3));
 
     // Add NPCs to locations
-  // Kirkhoff Downstairs
-NPC janitor("Janitor", "A tired-looking janitor cleaning the floors.");
-janitor.addMessage("Keep it quiet down here, I need to focus.");
-janitor.addMessage("I’m just trying to get through the day.");
-kirkhoffDownstairs->add_npc(janitor);
+    NPC janitor("Janitor", "A tired-looking janitor cleaning the floors.");
+    janitor.addMessage("Keep it quiet down here, I need to focus.");
+    janitor.addMessage("I’m just trying to get through the day.");
+    locations[1].add_npc(janitor);
 
-// Library
-NPC librarian("Librarian", "A stern librarian who shushes anyone who talks too loudly.");
-librarian.addMessage("Shh... Keep the noise down in the library.");
-librarian.addMessage("If you’re looking for a book, let me know.");
-library->add_npc(librarian);
+    NPC librarian("Librarian", "A stern librarian who shushes anyone who talks too loudly.");
+    librarian.addMessage("Shh... Keep the noise down in the library.");
+    librarian.addMessage("If you’re looking for a book, let me know.");
+    locations[2].add_npc(librarian);
 
-// Woods
-NPC elf("Elf", "A mysterious elf who needs your help.");
-elf.addMessage("The forest whispers secrets... Are you ready to listen?");
-elf.addMessage("I can help you, but it will cost you.");
-woods->add_npc(elf);
+    NPC elf("Elf", "A mysterious elf who needs your help.");
+    elf.addMessage("The forest whispers secrets... Are you ready to listen?");
+    elf.addMessage("I can help you, but it will cost you.");
+    locations[3].add_npc(elf);
 
-// Dormitory
-NPC roommate("Roommate", "Your friendly roommate, always ready to chat.");
-roommate.addMessage("Hey! You getting settled in?");
-roommate.addMessage("I’ve got the pizza ordered, we’re gonna have a great night.");
-dormitory->add_npc(roommate);
+    NPC roommate("Roommate", "Your friendly roommate, always ready to chat.");
+    roommate.addMessage("Hey! You getting settled in?");
+    roommate.addMessage("I’ve got the pizza ordered, we’re gonna have a great night.");
+    locations[4].add_npc(roommate);
 
-// Cafeteria
-NPC chef("Chef", "A cheerful chef cooking up a storm in the cafeteria.");
-chef.addMessage("The food here is great, but the secret is in the seasoning.");
-chef.addMessage("You should try the special of the day!");
-cafeteria->add_npc(chef);
+    NPC chef("Chef", "A cheerful chef cooking up a storm in the cafeteria.");
+    chef.addMessage("The food here is great, but the secret is in the seasoning.");
+    chef.addMessage("You should try the special of the day!");
+    locations[5].add_npc(chef);
 
-// Parking Lot
-NPC securityGuard("Security Guard", "A vigilant security guard patrolling the parking lot.");
-securityGuard.addMessage("Watch your step around here. I’ve seen some strange things.");
-securityGuard.addMessage("If you see anything suspicious, let me know.");
-parkingLot->add_npc(securityGuard);
+    NPC securityGuard("Security Guard", "A vigilant security guard patrolling the parking lot.");
+    securityGuard.addMessage("Watch your step around here. I’ve seen some strange things.");
+    securityGuard.addMessage("If you see anything suspicious, let me know.");
+    locations[6].add_npc(securityGuard);
 
-// Science Building
-NPC professor("Professor", "A busy professor rushing to their next class.");
-professor.addMessage("I’m late for my lecture, but can I help you with something?");
-professor.addMessage("You look like someone who appreciates a good experiment.");
-scienceBuilding->add_npc(professor);
-    // Connect locations
-    kirkhoffUpstairs->add_location("downstairs", kirkhoffDownstairs);
-    kirkhoffDownstairs->add_location("upstairs", kirkhoffUpstairs);
-    kirkhoffDownstairs->add_location("north", library);
-    library->add_location("south", kirkhoffDownstairs);
-    library->add_location("east", woods);
-    woods->add_location("west", library);
-    woods->add_location("south", dormitory);
-    dormitory->add_location("north", woods);
-    dormitory->add_location("east", cafeteria);
-    cafeteria->add_location("west", dormitory);
-    cafeteria->add_location("south", parkingLot);
-    parkingLot->add_location("north", cafeteria);
-    parkingLot->add_location("east", scienceBuilding);
-    scienceBuilding->add_location("west", parkingLot);
+    NPC professor("Professor", "A busy professor rushing to their next class.");
+    professor.addMessage("I’m late for my lecture, but can I help you with something?");
+    professor.addMessage("You look like someone who appreciates a good experiment.");
+    locations[7].add_npc(professor);
 
-    // Add locations to the world
-    locations.push_back(*kirkhoffUpstairs);
-    locations.push_back(*kirkhoffDownstairs);
-    locations.push_back(*library);
-    locations.push_back(*woods);
-    locations.push_back(*dormitory);
-    locations.push_back(*cafeteria);
-    locations.push_back(*parkingLot);
-    locations.push_back(*scienceBuilding);
+    // Connect locations using pointers
+    locations[0].add_location("downstairs", &locations[1]);
+    locations[1].add_location("upstairs", &locations[0]);
+    locations[1].add_location("north", &locations[2]);
+    locations[2].add_location("south", &locations[1]);
+    locations[2].add_location("east", &locations[3]);
+    locations[3].add_location("west", &locations[2]);
+    locations[3].add_location("south", &locations[4]);
+    locations[4].add_location("north", &locations[3]);
+    locations[4].add_location("east", &locations[5]);
+    locations[5].add_location("west", &locations[4]);
+    locations[5].add_location("south", &locations[6]);
+    locations[6].add_location("north", &locations[5]);
+    locations[6].add_location("east", &locations[7]);
+    locations[7].add_location("west", &locations[6]);
 }
 
 
@@ -394,6 +379,9 @@ void Game::give(std::vector<std::string> target) { std::cout << "You start a con
 
 
 void Game::go(std::vector<std::string> args) {
+
+  	currentLocation->set_visited(); // Mark as visited
+
     if (args.empty()) {
         std::cout << "Go where? Please specify a direction.\n";
         return;
@@ -410,7 +398,7 @@ void Game::go(std::vector<std::string> args) {
 
     // Move to the new location
     currentLocation = it->second;
-    currentLocation->set_visited(); // Mark as visited
+
 
     // Print the new location details
     std::cout << *currentLocation << std::endl;
@@ -424,7 +412,7 @@ Location* Game::randomLocation() {
     std::srand(std::time(nullptr));  // Seed the random number generator
     int randomIndex = std::rand() % locations.size();  // Get a random index
 
-    return &locations[randomIndex];  // Return a pointer to the random location
+    return &locations[randomIndex];
 }
 
 void Game::talk(std::vector<std::string> args) {
@@ -462,6 +450,7 @@ void Game::talk(std::vector<std::string> args) {
 }
 
 void Game::play() {
+
     std::cout << "Starting the game..." << std::endl;
 
     std::string input;
