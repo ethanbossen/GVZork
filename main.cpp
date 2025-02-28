@@ -91,6 +91,13 @@ Location::Location(const std::string& name, const std::string& description) {
         items.push_back(item);
     }
 
+    void Location::remove_item(const Item& item) {
+    auto it = std::find_if(items.begin(), items.end(),
+        [&item](const Item& i) { return i.getName() == item.getName(); });
+    if (it != items.end()) {
+        items.erase(it);
+    }
+    }
     std::vector<Item> Location::get_items() const { return items;}
 
     void Location::set_visited(){
@@ -168,6 +175,8 @@ Game::Game() {
         commands.insert(std::make_pair("look", &Game::look));
         commands.insert(std::make_pair("quit", &Game::quit));
         commands.insert(std::make_pair("exit", &Game::quit));
+        commands.insert(std::make_pair("i", &Game::showInventory));
+
 
         return commands;
 
@@ -304,8 +313,51 @@ void Game::showHelp(std::vector<std::string> args) {
         std::cout << " - " << cmd.first << std::endl;
     }
 }
-void Game::talk(std::vector<std::string> args) { std::cout << "You start a conversation..." << std::endl; }
-void Game::take(std::vector<std::string> target) { std::cout << "You start a conversation..." << std::endl; }
+
+void Game::showInventory(std::vector<std::string> args) {
+    if (inventory.empty()) {
+        std::cout << "Your inventory is empty.\n";
+    } else {
+        std::cout << "Your inventory contains:\n";
+        for (const auto& item : inventory) {
+            std::cout << "- " << item << std::endl;
+        }
+    }
+}
+
+void Game::take(std::vector<std::string> args) {
+    // Check if the first argument is an article ("the" or "a")
+    std::vector<std::string> articles = {"the", "a"};
+
+    if (args.size() > 0 && std::find(articles.begin(), articles.end(), args[0]) != articles.end()) {
+        args.erase(args.begin());  // Remove the article
+    }
+
+    // Join the remaining arguments into a single string for the item name
+    std::string fullItemName = "";
+    for (const auto& arg : args) {
+        if (!fullItemName.empty()) fullItemName += " ";
+        fullItemName += arg;
+    }
+
+    // Search for the item in the current location's items
+    bool itemFound = false;
+    for (auto& item : currentLocation->get_items()) {
+        if (item.getName() == fullItemName) {
+            itemFound = true;
+            inventory.push_back(item);  // Add item to the inventory
+            currentLocation->remove_item(item);  // Remove item from the current location
+            std::cout << "You have taken the " << fullItemName << "." << std::endl;
+            break;
+        }
+    }
+
+    if (!itemFound) {
+        std::cout << "Item not found in this location." << std::endl;
+    }
+}
+
+
 void Game::give(std::vector<std::string> target) { std::cout << "You start a conversation..." << std::endl; }
 void Game::go(std::vector<std::string> args) {
     if (args.empty()) {
@@ -341,6 +393,8 @@ Location* Game::randomLocation() {
 
     return &locations[randomIndex];  // Return a pointer to the random location
 }
+
+void Game::talk(std::vector<std::string> args) { std::cout << "You start a conversation..." << std::endl; }
 
 void Game::play() {
     std::cout << "Starting the game..." << std::endl;

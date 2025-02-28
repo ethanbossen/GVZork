@@ -63,6 +63,7 @@ public:
     void add_npc(NPC npc);
     std::vector<NPC> get_npcs() const;
     void add_item(const Item& item);
+    void remove_item(const Item& item);
     std::vector<Item> get_items() const;
     void set_visited();
     bool get_visited() const;
@@ -74,7 +75,6 @@ public:
     Game();
     void play();
     void executeCommand(std::string command, std::vector<std::string> args);
-    void normalizeCommand(std::string& command);
     void showHelp(std::vector<std::string> args);
     void talk(std::vector<std::string> target);
     void take(std::vector<std::string> target);
@@ -83,6 +83,7 @@ public:
     void showItems(std::vector<std::string> target);
     void look(std::vector<std::string> target);
     void quit(std::vector<std::string> target);
+    void showInventory(std::vector<std::string> target);
 //    void drink(std::vector<std::string> target);
 
 private:
