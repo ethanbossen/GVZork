@@ -375,7 +375,52 @@ void Game::take(std::vector<std::string> args) {
     }
 }
 
-void Game::give(std::vector<std::string> target) { std::cout << "You start a conversation..." << std::endl; }
+void Game::give(std::vector<std::string> target) {
+	if (target.size() < 2) {
+        std::cout << "Usage: give <npc> <item>\nExample: give elf apple\n";
+        return;
+    }
+
+    std::string npcName = target[0];
+    std::string itemName = target[1];
+
+    bool elfPresent = false;
+    for (const NPC& npc : currentLocation->get_npcs()) {
+        if (npc.getName() == "Elf") {
+            elfPresent = true;
+            break;
+        }
+    }
+
+    // Verify we're giving to the elf in correct location
+    if (!elfPresent) {
+        std::cout << "You can only give items to the elf!\n";
+        return;
+    }
+
+    // Find item in inventory
+    auto it = std::find_if(inventory.begin(), inventory.end(),
+        [&](const Item& i) { return i.getName() == itemName; });
+
+    if (it == inventory.end()) {
+        std::cout << "You don't have a " << itemName << " in your inventory.\n";
+        return;
+    }
+
+    // Check if item is edible
+    if (it->getCalories() <= 0) {
+        std::cout << "The elf can't eat " << itemName << "!\n";
+        return;
+    }
+
+    // Update calorie tracking
+    int itemCalories = it->getCalories();
+    caloriesNeeded = std::max(0, caloriesNeeded - itemCalories);
+    inventory.erase(it);
+
+    std::cout << "The elf ate " << itemName << " (" << itemCalories
+              << " calories). Remaining needed: " << caloriesNeeded << "\n";
+}
 
 
 void Game::go(std::vector<std::string> args) {
@@ -455,6 +500,10 @@ void Game::play() {
 
     std::string input;
     while (true) {
+      	 if (caloriesNeeded <= 0) {
+        	std::cout << "\n*** The elf is satisfied! You've won the game! ***\n";
+        	inProgress = false;
+    	 }
         std::cout << "> ";
         std::getline(std::cin, input);
 
