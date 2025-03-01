@@ -1,7 +1,3 @@
-//
-// Created by Ethan Bossenbroek on 2/18/25.
-//
-
 #ifndef GVZORK_H
 #define GVZORK_H
 
@@ -60,13 +56,14 @@ public:
     Location(const std::string& name, const std::string& description);
     std::map<std::string, Location*> get_locations() const;
     void add_location(const std::string& direction, Location* location);
-    void add_npc(NPC npc);
-    std::vector<NPC> get_npcs() const;
+    void add_npc(NPC& npc);
+    std::vector<NPC>& get_npcs();
     void add_item(const Item& item);
     void remove_item(const Item& item);
     std::vector<Item> get_items() const;
     void set_visited();
     bool get_visited() const;
+    std::string getName() const;
     friend std::ostream& operator<<(std::ostream& os, const Location& location);
 };
 
@@ -88,6 +85,7 @@ public:
 private:
     std::map<std::string, std::function<void(Game*, std::vector<std::string>)>> commands;
     float currentWeight;
+    bool isInPotty = false;
     const int maxWeight = 50;
     std::vector<Item> inventory;
     std::vector<Location> locations;
@@ -98,16 +96,6 @@ private:
     void createWorld();
     std::map<std::string, std::function<void(Game*, std::vector<std::string>)>> setup_commands();
     Location* randomLocation();
-    // void showHelp(std::vector<std::string> args);
-    // void talk(std::vector<std::string> target);
-    // void meet(std::vector<std::string> target);
-    // void take(std::vector<std::string> target);
-    // void give(std::vector<std::string> target);
-    // void go(std::vector<std::string> target);
-    // void showItems(std::vector<std::string> target);
-    // void look(std::vector<std::string> target);
-    // void quit(std::vector<std::string> target);
-    // void drink(std::vector<std::string> target);
     std::map<std::string, std::string> commandAliases;
 };
 
