@@ -8,6 +8,8 @@
 #include <stdexcept>
 #include <functional>
 
+// Ethan Bossenbroek and Asa Rowntree March 2nd, 2025
+
 /**
  * @class Item
  * @brief Represents an item in the game with a name, description, calories, and weight.

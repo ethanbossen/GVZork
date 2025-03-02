@@ -7,6 +7,8 @@
 #include <algorithm>
 #include <random>
 
+// Ethan Bossenbroek and Asa Rowntree March 2nd, 2025
+
 /**
  * @brief Constructs an Item object.
  * @param name The name of the item.
