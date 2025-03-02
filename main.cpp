@@ -157,7 +157,7 @@ std::ostream& operator<<(std::ostream& os, const Location& location) {
         os << "- None\n";
     } else {
         for (const NPC& npc : location.npcs) {
-            os << "- " << npc << "\n";
+            os << "- " << npc.getName() << ":" << npc.getDescription() << "\n";
         }
     }
 
@@ -426,6 +426,9 @@ locations[7].add_location("east", &locations[9]);    // Three Floyds -> Food Cou
 
 // Merch Booths (8)
 locations[8].add_location("southwest", &locations[9]);// Back to Food Court
+
+// portal out of hell into vip lounge
+locations[13].add_location("north", &locations[3]);
 }
 
 /**
@@ -564,7 +567,6 @@ void Game::give(std::vector<std::string> target) {
 
     Item item = *it;
     inventory.erase(it);
-    currentLocation->add_item(item);
     currentWeight -= item.getWeight();
     std::cout << "You gave the " << itemName << " to the location.\n";
 
@@ -579,6 +581,7 @@ void Game::give(std::vector<std::string> target) {
             std::cout << "You are now in: " << currentLocation->getName() << "\n";
         }
     }
+    currentLocation->add_item(item);
 }
 
 /**
@@ -792,7 +795,7 @@ void Game::play() {
     std::cout << "Starting the game..." << std::endl;
 
     std::string input;
-    while (true) {
+    while (inProgress) {
       	 if (caloriesNeeded <= 0) {
         	std::cout << "\n\nDean rummages frantically through the parts, mumbling to himself:\n"
           << "\"Neck joint... needs the Floyd Rose... where's the-\"\n"
