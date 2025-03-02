@@ -74,6 +74,7 @@ public:
     void executeCommand(std::string command, std::vector<std::string> args);
     void showHelp(std::vector<std::string> args);
     void talk(std::vector<std::string> target);
+    void kiss(std::vector<std::string> target);
     void take(std::vector<std::string> target);
     void give(std::vector<std::string> target);
     void go(std::vector<std::string> target);

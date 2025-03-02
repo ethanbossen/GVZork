@@ -187,6 +187,7 @@ std::map<std::string, std::function<void(Game*, std::vector<std::string>)>> Game
     commands.insert(std::make_pair("quit", &Game::quit));
     commands.insert(std::make_pair("exit", &Game::quit));
     commands.insert(std::make_pair("i", &Game::showInventory));
+    commands.insert(std::make_pair("kiss", &Game::kiss));
 
     return commands;
 }
@@ -568,6 +569,41 @@ Location* Game::randomLocation() {
     std::uniform_int_distribution<int> dist(0, locations.size() - 1);
 
     return &locations[dist(gen)];
+}
+
+void Game::kiss(std::vector<std::string> args) {
+
+    if (!currentLocation) {
+        std::cout << "No locations available to talk to." << std::endl;
+        return;
+    }
+
+    std::vector<NPC>& npcs = currentLocation->get_npcs();
+    if (npcs.empty()) {
+        std::cout << "There are no NPCs to talk to in this location." << std::endl;
+        return;
+    }
+
+    if (args.empty()) {
+        std::cout << "You need to specify which NPC to talk to." << std::endl;
+        return;
+    }
+
+    std::string npcName;
+    for (size_t i = 0; i < args.size(); ++i) {
+        npcName += args[i];
+        if (i != args.size() - 1) npcName += " ";
+    }
+
+    for (NPC& npc : npcs) {
+        if (npc.getName() == npcName) {
+            std::cout << "You gingerly kiss " << npc.getName() << "... not very metal of you tbh" << std::endl;
+            return;
+        }
+    }
+
+    // If no NPC is found with the specified name
+    std::cout << "No NPC named " << npcName << " in this location." << std::endl;
 }
 
 void Game::talk(std::vector<std::string> args) {
