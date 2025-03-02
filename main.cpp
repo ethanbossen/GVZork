@@ -327,7 +327,9 @@ locations[1].add_npc(roadie);
 NPC beerVendor("Beer Vendor", "A cheerful vendor pouring pints.");
 beerVendor.addMessage("One sip of this, and you'll be ready for the next set!");
 beerVendor.addMessage("We ran out of IPA? Damn, that was fast.");
-locations[5].add_npc(beerVendor);
+beerVendor.addMessage("*mumbling* I love my job.");
+locations[6].add_npc(beerVendor);
+locations[7].add_npc(beerVendor);
 
 // Metal legends in the VIP Lounge
 NPC ozzy("Ozzy Osbourne", "The Prince of Darkness himself, sipping a drink in the VIP Lounge.");
@@ -376,6 +378,11 @@ locations[11].add_item(Item("Capacitor", "Orange drop capacitor for tone control
 locations[13].add_item(Item("Dime's Floyd", "The Floyd Rose used by the goat himself", 120, 0.15));
 locations[13].add_item(Item("Hell Pickup", "Hand wound by EVH himself, this thing roars", 150, 0.15));
 
+// beers
+locations[7].add_item(Item("Gumballhead", "Delicious Pale Ale, cost you $18, but frankly, who's surprised", 0, 0.15));
+locations[7].add_item(Item("Zombie Dust", "Hellishly Hoppy IPA, cost you $93, awesome!", 0, 0.15));
+locations[6].add_item(Item("Mortal Bloom", "Quencing IPA, cost you $400, tastes floral and citrusy", 0, 0.15));
+locations[6].add_item(Item("All Day IPA", "Drinkable and Crisp, cost you $3.47, totally crushable", 0, 0.15));
 
 // Main Stage
 locations[0].add_location("north", &locations[3]);   // VIP Lounge
@@ -488,6 +495,7 @@ void Game::showHelp(std::vector<std::string> target) {
 void Game::showInventory(std::vector<std::string> target) {
     if (inventory.empty()) {
         std::cout << "Your inventory is empty.\n";
+        currentWeight = 0;
     } else {
         std::cout << "Your inventory contains:\n";
         for (const auto& item : inventory) {
@@ -566,7 +574,7 @@ void Game::give(std::vector<std::string> target) {
     Item item = *it;
     inventory.erase(it);
     currentWeight -= item.getWeight();
-    std::cout << "You gave the " << itemName << " to the location.\n";
+    std::cout << "You gave the " << itemName << ".\n";
 
     if (currentLocation->getName() == "VIP Lounge") {
         if (item.getCalories() > 0) {
@@ -575,8 +583,8 @@ void Game::give(std::vector<std::string> target) {
                       << item.getCalories() << " awesomeness points). Remaining needed: "
                       << caloriesNeeded << "\n";
         } else {
-            std::cout << "Dean didn't think that giving him a " << itemName
-                      << " was very funny. You are teleported to a new location!\n";
+            std::cout << "Dean says thanks you for the " << itemName
+                      << " but absurdly a portal opes up in the floor and you're teleported!\n";
             currentLocation = randomLocation();
             std::cout << "You are now in: " << currentLocation->getName() << "\n";
         }
@@ -797,26 +805,6 @@ void Game::play() {
 
     std::string input;
     while (inProgress) {
-      	 if (caloriesNeeded <= 0) {
-        	std::cout << "\n\nDean rummages frantically through the parts, mumbling to himself:\n"
-          << "\"Neck joint... needs the Floyd Rose... where's the-\"\n"
-          << "*CLANG* He drops a pickup, curses in dead languages, then freezes.\n\n"
-          << "\"YES! THIS IS IT!\"\n"
-          << "Dean's hands blur as he slams components together - \n"
-          << "mahogany body screaming, strings glowing with forbidden energy.\n\n"
-          << "He thrusts the finished guitar into your hands:\n"
-          << "\"THE HELLAXE! Now go channel the rift before Metalapokolips collapses!\"\n\n"
-          << "You stride onto the Main Stage. The crowd's roar becomes silence.\n"
-          << "First chord - reality bends. Second chord - skies crack.\n"
-          << "By the solo, the very fabric of the festival stabilizes,\n"
-          << "pyrotechnics rewriting the laws of physics.\n\n"
-          << "When the feedback dies, you're left with:\n"
-          << "- A destroyed PA system\n"
-          << "- Three record label contracts\n"
-          << "- A crowd too hoarse to even whisper 'encore'\n\n"
-          << "METALAPOKOLIPS HAS BEEN SAVED. \\m/\n";
-        	inProgress = false;
-    	 }
         std::cout << "> ";
         std::getline(std::cin, input);
 
@@ -840,6 +828,26 @@ void Game::play() {
         }
 
         executeCommand(command, args);
+        if (caloriesNeeded <= 0) {
+        	std::cout << "\n\nDean rummages frantically through the parts, mumbling to himself:\n"
+        	<< "\"Neck joint... needs the Floyd Rose... where's the-\"\n"
+        	<< "*CLANG* He drops a pickup, curses in dead languages, then freezes.\n\n"
+        	<< "\"YES! THIS IS IT!\"\n"
+        	<< "Dean's hands blur as he slams components together - \n"
+        	<< "mahogany body screaming, strings glowing with forbidden energy.\n\n"
+        	<< "He thrusts the finished guitar into your hands:\n"
+        	<< "\"THE HELLAXE! Now go channel the rift before Metalapokolips collapses!\"\n\n"
+        	<< "You stride onto the Main Stage. The crowd's roar becomes silence.\n"
+        	<< "First chord - reality bends. Second chord - skies crack.\n"
+        	<< "By the solo, the very fabric of the festival stabilizes,\n"
+        	<< "pyrotechnics rewriting the laws of physics.\n\n"
+        	<< "When the feedback dies, you're left with:\n"
+        	<< "- A destroyed PA system\n"
+        	<< "- Three record label contracts\n"
+        	<< "- A crowd too hoarse to even whisper 'encore'\n\n"
+        	<< "METALAPOKOLIPS HAS BEEN SAVED. \\m/\n";
+        	inProgress = false;
+    	}
     }
 }
 
