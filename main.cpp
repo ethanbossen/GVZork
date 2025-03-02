@@ -257,7 +257,7 @@ You're trapped in the most brutal metal festival of all time.
 The air reeks of burnt amplifiers and monster energy drinks.
 
 YOUR MISSION:
-James Hetfield broke his wrist and cant play the show toingt!
+James Hetfield broke his wrist and can't play the show tonight!
 Now it's up to you, a young opener to take his place. However, the only
 way to take his place and play a legenedary show with Metallica is...
 with the ultimate guitar!!!
@@ -521,6 +521,7 @@ void Game::take(std::vector<std::string> args) {
                 std::cout << "You cannot take the " << fullItemName << ". It would exceed your weight limit of 30 lbs.\n";
                 return;
             }
+            currentLocation->remove_item(item);
             inventory.push_back(item);
             currentWeight += item.getWeight();
             std::cout << "You have taken the " << fullItemName << "." << std::endl;
