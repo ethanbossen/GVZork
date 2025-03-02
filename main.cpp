@@ -542,13 +542,12 @@ void Game::take(std::vector<std::string> args) {
  * @param target The arguments specifying the item to give.
  */
 void Game::give(std::vector<std::string> target) {
-
     std::vector<std::string> articles = {"the", "a"};
     if (std::find(articles.begin(), articles.end(), target[0]) != articles.end()) {
         target.erase(target.begin());
     }
 
-    std::string itemName = "";
+    std::string itemName;
     for (const auto& arg : target) {
         if (!itemName.empty()) itemName += " ";
         itemName += arg;
@@ -558,7 +557,6 @@ void Game::give(std::vector<std::string> target) {
 
     auto it = std::find_if(inventory.begin(), inventory.end(),
         [&](const Item& i) { return toLowercase(i.getName()) == lowerItemName; });
-
 
     if (it == inventory.end()) {
         std::cout << "You don't have a " << itemName << " in your inventory.\n";
@@ -573,15 +571,18 @@ void Game::give(std::vector<std::string> target) {
     if (currentLocation->getName() == "VIP Lounge") {
         if (item.getCalories() > 0) {
             caloriesNeeded = std::max(0, caloriesNeeded - item.getCalories());
-            std::cout << "Dean slaps the " << itemName << " on to the gutiar it was worth " << item.getCalories()
-                      << " awesomeness points). Remaining needed: " << caloriesNeeded << "\n";
+            std::cout << "Dean slaps the " << itemName << " on to the guitar it was worth "
+                      << item.getCalories() << " awesomeness points). Remaining needed: "
+                      << caloriesNeeded << "\n";
         } else {
-            std::cout << "Dean didn't think that giving him a " << itemName << " was very funny. You are teleported to a new location!\n";
+            std::cout << "Dean didn't think that giving him a " << itemName
+                      << " was very funny. You are teleported to a new location!\n";
             currentLocation = randomLocation();
             std::cout << "You are now in: " << currentLocation->getName() << "\n";
         }
+    } else {
+        currentLocation->add_item(item);
     }
-    currentLocation->add_item(item);
 }
 
 /**
