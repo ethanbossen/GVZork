@@ -239,7 +239,7 @@ std::map<std::string, std::function<void(Game*, std::vector<std::string>)>> Game
     commands.insert(std::make_pair("quit", &Game::quit));
     commands.insert(std::make_pair("exit", &Game::quit));
     commands.insert(std::make_pair("i", &Game::showInventory));
-    commands.insert(std::make_pair("kiss", &Game::kiss));
+    commands.insert(std::make_pair("hug", &Game::hug));
     commands.insert(std::make_pair("teleport", &Game::teleport));
 
     return commands;
@@ -669,7 +669,7 @@ Location* Game::randomLocation() {
  * @brief Allows the player to kiss an NPC.
  * @param args The arguments specifying the NPC to kiss.
  */
-void Game::kiss(std::vector<std::string> args) {
+void Game::hug(std::vector<std::string> args) {
     if (!currentLocation) {
         std::cout << "No locations available to talk to." << std::endl;
         return;
@@ -686,15 +686,22 @@ void Game::kiss(std::vector<std::string> args) {
         return;
     }
 
-    std::string npcName;
-    for (size_t i = 0; i < args.size(); ++i) {
-        npcName += args[i];
-        if (i != args.size() - 1) npcName += " ";
+    std::vector<std::string> ignoredWords = {"to"};
+    if (std::find(ignoredWords.begin(), ignoredWords.end(), args[0]) != ignoredWords.end()) {
+        args.erase(args.begin());
     }
 
+    std::string npcName = "";
+    for (const auto& arg : args) {
+        if (!npcName.empty()) npcName += " ";
+        npcName += arg;
+    }
+
+    std::string lowerNpcName = toLowercase(npcName);
+
     for (NPC& npc : npcs) {
-        if (npc.getName() == npcName) {
-            std::cout << "You gingerly kiss " << npc.getName() << "... not very metal of you tbh" << std::endl;
+        if (toLowercase(npc.getName()) == lowerNpcName) {
+            std::cout << "You give a hug to " << npc.getName() << "... not very metal of you tbh" << std::endl;
             return;
         }
     }

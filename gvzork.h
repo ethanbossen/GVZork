@@ -135,7 +135,7 @@ public:
     void executeCommand(std::string command, std::vector<std::string> args); ///< Executes a game command.
     void showHelp(std::vector<std::string> args); ///< Displays a list of available commands.
     void talk(std::vector<std::string> target); ///< Allows the player to talk to an NPC.
-    void kiss(std::vector<std::string> target); ///< Allows the player to kiss an NPC.
+    void hug(std::vector<std::string> target); ///< Allows the player to kiss an NPC.
     void take(std::vector<std::string> target); ///< Allows the player to take an item.
     void give(std::vector<std::string> target); ///< Allows the player to give an item.
     void go(std::vector<std::string> target); ///< Allows the player to move to a new location.
